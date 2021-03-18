@@ -1,3 +1,5 @@
+By Erik Rodrigo Zamudio Ruiz
+
 library(rvest)
 webq<-"https://www.amazon.com.mx/s?k=arroz&i=specialty-aps&srs=18073069011&__mk_es_MX=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2TR2MJ5MDC66C&sprefix=arro%2Cspecialty-aps%2C201&ref=nb_sb_ss_ts-doa-p_1_4"
 selectorx<-"#search > div.s-desktop-width-max.s-desktop-content.sg-row > div.sg-col-16-of-20.sg-col.sg-col-8-of-12.sg-col-12-of-16 > div > span:nth-child(4) > div.s-main-slot.s-result-list.s-search-results.sg-row > div:nth-child(1) > div > span > div > div > div:nth-child(3) > h2 > a"
@@ -38,7 +40,7 @@ testamz
 linksamazon<-sapply(paginacionoficialamazon, damelinkamz)
 linksamazon
 
-#Aqwui no se si el nrow se iguala a los 7 caracteres de petici髇 en get articulo
+#Aqwui no se si el nrow se iguala a los 7 caracteres de petici贸n en get articulo
 z_mat<-matrix(unlist(linksamazon), nrow = 96)
 z_mat
 
@@ -84,7 +86,7 @@ colnames(res_tabla)<-tabla_name
 res_tabla
 str(res_tabla)
 
-resultado_arroz<-c(as.character(res_tabla$Marca), as.character(res_tabla$Ingredients), as.character(res_tabla$Porci髇), as.character(res_tabla$`Pa韘 de origen`), as.character(res_tabla$`Peso del producto`), as.character(res_tabla$`Dimensiones del producto`), as.character(res_tabla$`Tipo de envase`))
+resultado_arroz<-c(as.character(res_tabla$Marca), as.character(res_tabla$Ingredients), as.character(res_tabla$Porci贸n), as.character(res_tabla$`Pa铆s de origen`), as.character(res_tabla$`Peso del producto`), as.character(res_tabla$`Dimensiones del producto`), as.character(res_tabla$`Tipo de envase`))
 resultado_arroz                   
 
 get_articulo<-function(urlz){
@@ -127,7 +129,7 @@ get_articulo<-function(urlz){
   }
   
 
-  col<-c("Marca", "Ingredients", "Porci髇", "Pa韘 de origen", "Peso del producto", "Dimensiones del producto", "Tipo de envase" )
+  col<-c("Marca", "Ingredients", "Porci贸n", "Pa铆s de origen", "Peso del producto", "Dimensiones del producto", "Tipo de envase" )
   if(length(res_tabla)==0){
     #no hay detalles todo a -1
     mitab<-data.frame(colnames(col))
@@ -142,9 +144,9 @@ get_articulo<-function(urlz){
     if(length(marca)==0) marca<- "1"
     ingredientes<-as.character(res_tabla$Ingredients)
     if(length(ingredientes)==0) ingredientes<- "1"
-    porcion<-as.character(res_tabla$Porci髇)
+    porcion<-as.character(res_tabla$Porci贸n)
     if(length(porcion)==0) porcion<- "1"
-    pais<-as.character(res_tabla$`Pa韘 de origen`)
+    pais<-as.character(res_tabla$`Pa铆s de origen`)
     if(length(pais)==0) pais<- "1"
     peso<-as.character(res_tabla$`Peso del producto`)
     if(length(peso)==0) peso<- "1"
@@ -154,8 +156,8 @@ get_articulo<-function(urlz){
     if(length(envase)==0) envase<- "1"
     dfzero$Marca<-marca
     dfzero$Ingredients<-ingredientes
-    dfzero$Porci髇<-porcion
-    dfzero$`Pa韘 de origen`<-pais
+    dfzero$Porci贸n<-porcion
+    dfzero$`Pa铆s de origen`<-pais
     dfzero$`Peso del producto`<-peso
     dfzero$`Dimensiones del producto`<-dimension
     dfzero$`Tipo de envase`<-envase
@@ -164,7 +166,7 @@ get_articulo<-function(urlz){
     
     
   }
-  articulo<-c(nombre_texto, precio_texto, acerca_texto, describir_texto, as.character(res_tabla$Marca), as.character(res_tabla$Ingredients), as.character(res_tabla$Porci髇), as.character(res_tabla$`Pa韘 de origen`), as.character(res_tabla$`Peso del producto`), as.character(res_tabla$`Dimensiones del producto`), as.character(res_tabla$`Tipo de envase`))
+  articulo<-c(nombre_texto, precio_texto, acerca_texto, describir_texto, as.character(res_tabla$Marca), as.character(res_tabla$Ingredients), as.character(res_tabla$Porci贸n), as.character(res_tabla$`Pa铆s de origen`), as.character(res_tabla$`Peso del producto`), as.character(res_tabla$`Dimensiones del producto`), as.character(res_tabla$`Tipo de envase`))
   articulo
 }
 
@@ -189,5 +191,5 @@ dim(pre)
 archivo<-as.data.frame(pre)
 archivo
 colnames(pre)<-c(1:105)
-rownames(pre)<-c('beneficios', 'descripci髇', 'precio', 'Marca', 'Ingredientes', 'Porci髇', 'Pa韘 de origen', 'Peso del producto', 'Dimensiones del producto', 'Tipo de envase')
+rownames(pre)<-c('beneficios', 'descripci贸n', 'precio', 'Marca', 'Ingredientes', 'Porci贸n', 'Pa铆s de origen', 'Peso del producto', 'Dimensiones del producto', 'Tipo de envase')
 View(pre)
