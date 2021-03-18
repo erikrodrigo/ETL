@@ -1,3 +1,5 @@
+By Erik Rodrigo Zamudio Ruiz
+ 
 library(rvest)
 url<-"https://www.lacomer.com.mx/lacomer/doHome.action?dep=Harinas-Arroz-y-legumbres&key=Despensa&padreId=67&pasId=57&opcion=listaproductos&path=,67&pathPadre=&mov=1&subOpc=0&jsp=PasilloPadre.jsp&succId=287&succFmt=100&agruId=57"
 selector<-"div.col-xs-6:nth-child(16) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > a:nth-child(1)"
@@ -10,7 +12,7 @@ nodo_links
 url_completa<-paste0("https://www.lacomer.com.mx/lacomer/", nodo_links)
 url_completa
 
-#Comparando url de paginación
+#Comparando url de paginaciÃ³n
 https://www.lacomer.com.mx/lacomer/doHome.action?key=Despensa&succId=287&padreId=67&pasId=57&opcion=listaproductos&path=,67&pathPadre=0&jsp=PasilloPadre.jsp&noPagina=2&mov=1&subOpc=0&agruId=57&succFmt=100&dep=Harinas-Arroz-y-legumbres
 https://www.lacomer.com.mx/lacomer/doHome.action?key=Despensa&succId=287&padreId=67&pasId=57&opcion=listaproductos&path=,67&pathPadre=0&jsp=PasilloPadre.jsp&noPagina=3&mov=1&subOpc=0&agruId=57&succFmt=100&dep=Harinas-Arroz-y-legumbres
 
