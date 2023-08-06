@@ -1,0 +1,162 @@
+resultados_all
+import pandas as pd
+
+# Renombrar las columnas en el DataFrame
+resultados_all.rename(columns={
+    'Columna_3': 'Costo',
+    'Columna_4': 'Año',
+    'Columna_5': 'Kilometraje',
+    'Columna_6': 'Data',
+    'Columna_7': 'Coordenadas',
+    'Columna_8': 'Vendedor'
+}, inplace=True)
+
+resultados_all
+import pandas as pd
+import re
+
+# Expresión regular para buscar las marcas en la columna 0
+marcas_autos_patron = re.compile(r'\b(acura|alfa\sromeo|aston\smartin|audi|baic|bentley|bmw|buick|byd|cadillac|changan|chevrolet|chrysler|chirey|dodge|omoda|dfsk|faw|ferrari|fiat|ford|gmc|honda|hyundai|infiniti|isuzu|jac|jaguar|jeep|jetour|omoda|kia|lamborghini|land\srover|lexus|lincoln|lotus|maserati|mazda|mclaren|mercedes-benz|mg|mini|mitsubishi|nissan|peugeot|porsche|ram|renault|rolls\sroyce|seat|smart|subaru|suzuki|tesla|toyota|volkswagen|volvo|vuhl)\b', re.IGNORECASE)
+
+# Aplicar la expresión regular a la columna 'Data' y almacenar los resultados en una nueva columna "Marca"
+resultados_all['Marca'] = resultados_all['Data'].str.extract(marcas_autos_patron)
+
+resultados_all
+import re
+
+# Expresión regular para buscar las marcas en la columna 0
+marcas_autos_patron = re.compile(r'\b(acura|alfa\sromeo|aston\smartin|audi|baic|bentley|bmw|buick|byd|cadillac|changan|chirey|chevrolet|chrysler|dodge|dfsk|faw|ferrari|fiat|ford|gmc|honda|hyundai|infiniti|isuzu|jac|jaguar|jeep|jetour|omoda|kia|lamborghini|land\srover|lexus|lincoln|lotus|maserati|mazda|mclaren|mercedes-benz|mg|mini|mitsubishi|nissan|peugeot|porsche|ram|renault|rolls\sroyce|seat|smart|subaru|suzuki|tesla|toyota|volkswagen|volvo|vuhl)\b', re.IGNORECASE)
+
+# Eliminar la marca de la columna 'Data' y almacenar el resto en la nueva columna "Versión"
+resultados_all['Versión'] = resultados_all['Data'].str.replace(marcas_autos_patron, '').str.strip()
+resultados_all
+import re
+
+def limpiar_palabra(palabra):
+    # Eliminar guiones y espacios del inicio y final de la palabra y convertirla a minúsculas
+    return re.sub(r'^[-\s]+|[-\s]+$', '', palabra).lower()
+
+# Función para obtener el modelo de la segunda o tercera palabra del texto
+def obtener_modelo(texto):
+    # Lista de modelos
+    modelos = ["ilx", "tlx", "nsx", "rdx", "mdx", "giulietta", "giulia", "stelvio", "aston", "rapide", "vantage",
+               "vanquish", "db11", "dbx", "a1", "a3", "a4", "a5", "a6", "a7", "a8", "q2", "q3", "q5", "q7", "q8",
+               "s3", "tt", "r8", "d20", "x25", "x30", "x35", "x65", "bj40", "bj20", "continental", "mulsanne", "bentayga",
+               "i3", "Serie 1", "Serie 2", "Serie 3", "Serie 4", "Serie 5", "Serie 6", "Serie 7", "i8", "x2", "x1", "x3",
+               "x4", "x5", "x6", "encore", "enclave", "envision", "verano", "han", "tang", "yuan", "ats", "cts", "city", "vento",
+               "escalade", "xt5", "xt4", "alsvin", "cs35", "cs55", "cs75", "uni-t", "star light", "q20", "star",
+               "minivan", "minitruck", "tiggo 4", "tiggo 7 pro", "Tiggo 8", "omoda 5", "aveo", "beat", "onix", "cavalier",
+               "spark", "camaro", "captiva", "equinox", "corvette", "tracker", "traverse", "blazer", "silverado",
+               "tahoe", "suburban", "tornado", "colorado", "volt", "bolt", "pacífica", "300c", "dodge", "attitude", "rsx",
+               "neon", "durango", "challenger", "charger", "grand", "journey", "gf1500", "gf5000", "roma", "portofino",
+               "f8", "sf90", "812", "fiat 500", "palio", "uno", "500", "ducato", "500l", "mobi", "ecosport", "figo",
+               "fiesta", "fusion", "ecosport", "escape", "edge", "explorer", "expedition", "f-series", "mustang",
+               "ranger", "transit", "yukon", "sierra", "acadia", "terrain", "fit", "civic", "accord", "hr-v", "cr-v",
+               "pilot", "odyssey", "br-v", "grand i10", "elantra", "accent hb20", "tucson", "santa fe", "creta",
+               "ioniq", "palisade", "starex", "q50", "q60", "q70", "qx60", "qx70", "qx80", "d-max", "sei 2", "sei 3",
+               "sei 4", "sei 7", "j4", "t6", "t8", "esei 2", "esei 3", "esei 4", "esei 7", "ej4", "et6", "et8", "xe",
+               "xf", "f-type", "xj", "xk", "f-pace", "renegade", "compass", "wrangler", "cherokee", "jeep", "x70",
+               "x90", "dasheng", "forte", "sportage", "sorento", "optima", "rio", "soul", "niro", "sedona", "stinger",
+               "seltos", "huracán", "aventador", "urus", "lr4", "discovery", "defender", "range", "es", "is", "ls", "lx",
+               "nx", "rx", "ux", "mkc", "mkz", "nautilus", "navigator", "aviator", "emira", "evija", "eletre",
+               "quattroporte", "ghibli", "granturismo", "cx-3", "cx-5", "cx-9", "cx-30", "cx-50", "mx-5", "2","3", "cx 5", "cx 7", "cx 90", "cx 9", "mx 5", "artura",
+               "720s", "765lt", "gt", "clase a", "clase b", "cla", "clase cls", "clase s", "clase slk", "clase sl",
+               "clase gla", "clase glk", "clase m", "clase gl", "clase g", "amg gt", "viano", "vito", "sprinter", "c-hr", "trax",
+               "mg 5", "mg gt", "mg hs", "mg zs", "mg rx8", "mini urbno", "mini cabrio", "mini","mini countryman", "mirage",
+               "montero", "eclipse", "outlander", "l200", "leaf", "march", "versa", "sentra", "x trail", "xtrail", "X-Trail", "altima", "maxima", "note",
+               "kicks", "x-trail", "pathfinder", "armada", "nv350", "np300", "nt450", "370z", "gt-r", "208", "301", "308",
+               "2008", "3008", "5008", "partner", "rifter", "manager", "boxster", "cayman", "911", "cayenne", "macan",
+               "panamera", "taycan", "1500", "2500", "4000", "promaster", "700", "kwid", "sandero", "twizy", "logan",
+               "oroch", "koleos", "duster", "captur", "kangoo", "ghost", "phantom", "wraith", "dawn", "ibiza", "león",
+               "ateca", "arona", "tarraco", "smart fortwo", "smart forfour", "viper", "grand cherokee", "impreza", "xv",
+               "forester", "wrx", "swift", "ciaz", "baleno", "scross", "vitara", "ertiga", "ignis", "jimny", "model s",
+               "model x", "model 3", "yaris", "corolla", "prius", "camry", "highlander", "sequoia", "avanza", "hiace",
+               "hilux", "tacoma", "tundra", "rav4", "ch-r", "sienna", "land cruiser", "supra", "beetle", "amarok", "gol",
+               "crossfox", "polo", "virtus", "jetta", "golf", "t-cross", "nivus", "taos", "tiguan", "passat", "teramont",
+               "touareg", "cross", "caddy", "transporter", "crafter", "volvo", "v40", "s60", "s80", "s90", "xc60", "xc90"]
+
+    # Dividir el texto en palabras
+    palabras = texto.split()
+
+    # Buscar el modelo en las palabras a partir de la segunda
+    for palabra in palabras[:]:
+        palabra_limpiada = limpiar_palabra(palabra)
+        if palabra_limpiada in modelos:
+            return palabra_limpiada
+
+    # Si no se encuentra ningún modelo, devolver None
+    return None
+
+# Agregar la columna 'modelo' al DataFrame
+resultados_all['Modelo'] = resultados_all['Data'].apply(obtener_modelo)
+
+# Convertir la primera letra de cada palabra en mayúscula en la columna "Modelo"
+resultados_all['Modelo'] = resultados_all['Modelo'].str.title()
+
+resultados_all
+# Renombrar columna Ubicación, Data como "Costo"
+resultados_all.rename(columns={
+    'Coordenadas': 'Ubicación',
+    'Columna_1': 'string_pesos',
+    'Columna_2': 'default',
+    'Data': 'defaultd'
+    }, inplace=True)
+from datetime import datetime
+import locale
+
+# Añadir una columna con la fecha de hoy en formato "dd/mm/aa"
+resultados_all["Fecha"] = datetime.now().strftime("%d/%m/%y")
+
+# Verificar si la columna 'string_pesos' existe en el DataFrame 'resultados_all'
+if 'string_pesos' in resultados_all.columns:
+    resultados_all.drop(['string_pesos', 'default', 'default'], axis=1, inplace=True)
+
+# Reorganizar las columnas según lo solicitado por exagono software
+resultados_all = resultados_all[["Fecha", "Año", "Marca", "Modelo", "Versión", "Costo", "Kilometraje", "Ubicación", "Vendedor"]]
+
+# Cambiar los valores de None en la columna 'Vendedor' por 'Mercadolibre'
+resultados_all['Vendedor'] = resultados_all['Vendedor'].fillna('Mercadolibre')
+
+resultados_all = resultados_all.sort_values(by=['Marca', 'Costo'], ascending=[True, True])
+resultados_all = resultados_all.reset_index(drop=True)
+
+
+#pasar orden y conseguir modelos y versiones con fran
+
+resultados_all
+# Cambiar la primera letra del encabezado de las columnas a mayúsculas
+resultados_all.columns = resultados_all.columns.str.capitalize()
+from datetime import date
+import pandas as pd
+import os
+
+tabla = resultados_all
+
+# Agregar la columna "Fecha de Hoy" al DataFrame con la fecha actual
+hoy = date.today()
+
+# Obtener el folio inicial y el número de archivos previamente descargados
+folio_inicial = 0
+num_archivos_descargados = len(os.listdir('G:/Mi unidad/xs-files/ml/'))
+
+# Crear una variable para el número de folio actual y actualizarla para el siguiente archivo
+folio_actual = folio_inicial + num_archivos_descargados
+
+# Crear el nombre del archivo CSV con el folio actual
+folio_str = f"{folio_actual:07d}A"
+ruta_csv_nuevo = f'G:/Mi unidad/xs-files/ml/ml-{folio_str}-{hoy}.csv'
+
+# Guardar el DataFrame en el nuevo archivo CSV
+tabla.to_csv(ruta_csv_nuevo, index=False)
+
+# Imprimir el mensaje de confirmación con el nombre del archivo
+print(f"DataFrame ordenado guardado como '{ruta_csv_nuevo}'")
+
+# Leer el archivo CSV recién creado para verificar su contenido
+nuevo_dataframe = pd.read_csv(ruta_csv_nuevo)
+print(nuevo_dataframe)
+
+# Almacenar el nombre del archivo en la variable nombre_archivo
+nombre_archivo = f"ml-{folio_str}-{hoy}.csv"
+nombre_archivo
+resultados_all
