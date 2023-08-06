@@ -115,7 +115,7 @@ if 'string_pesos' in resultados_all.columns:
 resultados_all = resultados_all[["Fecha", "Año", "Marca", "Modelo", "Versión", "Costo", "Kilometraje", "Ubicación", "Vendedor"]]
 
 # Cambiar los valores de None en la columna 'Vendedor' por 'Mercadolibre'
-resultados_all['Vendedor'] = resultados_all['Vendedor'].fillna('Mercadolibre')
+resultados_all['Vendedor'] = resultados_all['Vendedor'].fillna('Autoventa ejemplo')
 
 resultados_all = resultados_all.sort_values(by=['Marca', 'Costo'], ascending=[True, True])
 resultados_all = resultados_all.reset_index(drop=True)
@@ -144,7 +144,7 @@ folio_actual = folio_inicial + num_archivos_descargados
 
 # Crear el nombre del archivo CSV con el folio actual
 folio_str = f"{folio_actual:07d}A"
-ruta_csv_nuevo = f'G:/Mi unidad/xs-files/ml/ml-{folio_str}-{hoy}.csv'
+ruta_csv_nuevo = f'G:/Mi unidad/xs-files/mlej/mlej-{folio_str}-{hoy}.csv'
 
 # Guardar el DataFrame en el nuevo archivo CSV
 tabla.to_csv(ruta_csv_nuevo, index=False)
@@ -157,6 +157,6 @@ nuevo_dataframe = pd.read_csv(ruta_csv_nuevo)
 print(nuevo_dataframe)
 
 # Almacenar el nombre del archivo en la variable nombre_archivo
-nombre_archivo = f"ml-{folio_str}-{hoy}.csv"
+nombre_archivo = f"mlej-{folio_str}-{hoy}.csv"
 nombre_archivo
 resultados_all
